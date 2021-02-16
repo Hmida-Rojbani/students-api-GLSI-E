@@ -37,4 +37,21 @@ app.post('/api/students', (req,res)=> {
     res.send(student);
 });
 
+const validation_id_schema = {
+    id : Joi.number().min(1)
+}
+app.put('/api/students/:id',(req,res) => {
+    let valid_res = Joi.validate(req.params,validation_id_schema);
+    if(valid_res.error)
+        return res.status(400).send(valid_res.error.details[0].message)
+    let student = students.find(s => s.id === parseInt(req.params.id))
+    if(!student) 
+        return res.status(404).send(`Student with id : ${req.params.id} is not found`);
+    valid_res = Joi.validate(req.body,validation_schema);
+    if(valid_res.error)
+        return res.status(400).send(valid_res.error.details[0].message)
+    student.name = req.body.name
+    res.send(student);
+});
+
 app.listen(port,()=> console.log(`Server running on ${port}...`));
