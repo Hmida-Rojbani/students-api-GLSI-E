@@ -1,0 +1,6 @@
+{
+    "app_mode":"Dev",
+    "db" :{
+        "url": "DB DEV url"
+    }
+}
